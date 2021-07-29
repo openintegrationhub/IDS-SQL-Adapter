@@ -1,0 +1,94 @@
+{
+   "title":"SQL",
+   "description":"OIH SQL Adapter",
+   "docsUrl":"https://github.com/openintegrationhub/sql-adapter",
+   "buildType":"docker",
+   "credentials":{
+      "fields":{
+         "databaseType":{
+            "label":"Type of the Database",
+            "required":true,
+            "viewClass":"TextFieldView",
+            "note":"Exact type of the database SQL / MYSQL / MARIADB / PostgreSQL",
+            "placeholder":"MYSQL"
+         },
+         "databaseUrl":{
+            "label":"Url of the database",
+            "required":true,
+            "viewClass":"TextFieldView",
+            "note":"Url where the database is located. Ex: localhost:3306",
+            "placeholder":"localhost"
+         },
+         "port":{
+            "label":"Port of the database",
+            "required":true,
+            "viewClass":"TextFieldView",
+            "note":"Accessable port of the Database that should be accessed",
+            "placeholder":"3306"
+         },
+         "databaseName":{
+            "label":"Name of the database",
+            "required":true,
+            "viewClass":"TextFieldView",
+            "note":"Name of the Database that should be accessed",
+            "placeholder":"DB1"
+         },
+         "user":{
+            "label":"Database-User",
+            "required":true,
+            "viewClass":"TextFieldView",
+            "note":"Name of the database user",
+            "placeholder":"root"
+         },
+         "password":{
+            "label":"Database password",
+            "required":true,
+            "viewClass":"PasswordFieldView",
+            "note":"Password of the database user"
+         },
+         "query":{
+            "label":"SQL-Query",
+            "required":true,
+            "viewClass":"TextFieldView",
+            "note":"SQL-Query that will be executed to fetch the data",
+            "placeholder":"SELECT * FROM sometable WHERE FROM_UNIXTIME(timestamp) > CURDATE() - INTERVAL 1 DAY"
+         },
+         "schema":{
+            "label":"Schema",
+            "required":false,
+            "viewClass":"TextFieldView",
+            "note":"Schema from Meta Data Repository",
+            "placeholder":"address"
+         },
+         "domainId":{
+            "label":"Domain Id",
+            "required":false,
+            "viewClass":"TextFieldView",
+            "note":"Domain Id from Meta Data Repository",
+            "placeholder":"5d3031a20cbe7c00115c7d8f"
+         }
+      }
+   },
+   "triggers":{
+      "getDataPolling":{
+         "title":"Fetch from SQL database",
+         "description":"Fetch from SQL database based on provided Query and send each row to OIH as JSON-Object",
+         "type":"polling",
+         "main":"./lib/triggers/getDataPolling.js",
+         "metadata":{
+            "out":"./lib/schemas/getData.out.json"
+         }
+      }
+   },
+   "actions":{
+      "addData":{
+         "title":"Add Data to SQL database",
+         "description":"Executing SQL queries based on the supplied data",
+         "main":"./lib/actions/addData.js",
+         "metadata":{
+            "in":"./lib/schemas/addData.in.json",
+            "out":"./lib/schemas/addData.out.json"
+         }
+      }
+   }
+}
